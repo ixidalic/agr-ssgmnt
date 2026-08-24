@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ageera-app-dashboard
+  labels:
+    grafana_dashboard: "1"
+    app.kubernetes.io/name: devops-assignment-app
+  annotations:
+    k8s-sidecar-target-directory: /tmp/dashboards
+    k8s-sidecar-dashboard-folder: Ageera
+    k8s-sidecar-dashboard-folder-uid: ageera
+  namespace: ageera
+data:
+  ageera-app.json: |
+    {
+      "annotations": {"list": []},
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 1,
+      "links": [],
+      "panels": [
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+          "id": 1,
+          "title": "HTTP Request Rate",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total[5m]))",
+              "legendFormat": "requests/sec",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+          "id": 2,
+          "title": "HTTP Request Latency (p95)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[5m])))",
+              "legendFormat": "p95",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 8},
+          "id": 3,
+          "title": "Synthetic Active Users",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "app_synthetic_active_users",
+              "legendFormat": "active users",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 8},
+          "id": 4,
+          "title": "Synthetic Queue Depth",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "app_synthetic_queue_depth",
+              "legendFormat": "queue depth",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 8},
+          "id": 5,
+          "title": "Synthetic CPU Load",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "app_synthetic_cpu_load_ratio",
+              "legendFormat": "cpu load",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
+          "gridPos": {"h": 6, "w": 24, "x": 0, "y": 16},
+          "id": 6,
+          "title": "Application Up",
+          "type": "stat",
+          "targets": [
+            {
+              "expr": "up{service=\"devops-assignment-app\"}",
+              "legendFormat": "up",
+              "refId": "A"
+            }
+          ],
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        }
+      ],
+      "refresh": "15s",
+      "schemaVersion": 39,
+      "tags": ["ageera", "application", "prometheus"],
+      "templating": {"list": []},
+      "time": {"from": "now-30m", "to": "now"},
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Ageera App Observability",
+      "uid": "ageera-app",
+      "version": 1
+    }

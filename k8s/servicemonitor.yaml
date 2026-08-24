@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: devops-assignment-app
+  labels:
+    release: kube-prometheus-stack
+    app.kubernetes.io/name: devops-assignment-app
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: devops-assignment-app
+  namespaceSelector:
+    matchNames:
+      - ageera
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s

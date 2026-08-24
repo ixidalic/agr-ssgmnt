@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-assignment-app
+  labels:
+    app.kubernetes.io/name: devops-assignment-app
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: devops-assignment-app
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+      protocol: TCP

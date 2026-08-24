@@ -1,4 +1,15 @@
-node_modules/
-dist/
+# Node build/dependency output
+**/node_modules/
+**/dist/
+**/coverage/
+
+# Logs and local environment
 *.log
 .env
+.env.*
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

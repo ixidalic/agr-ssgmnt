@@ -1,0 +1,44 @@
+grafana:
+  adminPassword: admin
+  service:
+    type: ClusterIP
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: ALL
+      label: grafana_dashboard
+      labelValue: "1"
+  defaultDashboardsEnabled: true
+
+prometheus:
+  service:
+    type: ClusterIP
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: true
+    serviceMonitorNamespaceSelector: {}
+    retention: 2d
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 768Mi
+
+alertmanager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+nodeExporter:
+  enabled: false
